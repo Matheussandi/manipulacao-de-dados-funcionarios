@@ -4,7 +4,6 @@ const uuid = require('uuid')
 const func = express()
 func.use(express.json())
 
-// middleware
 const verificaId = (req, res, next) => {
     const { id } = req.params
     const idFilter = funcionarios.find(funcio => funcio.id === id)
@@ -29,7 +28,7 @@ const veficaCadastro = (req, res, next) => {
 
 let funcionarios = []
 
-// Adiciona funcionário
+// Adicionar funcionário
 func.post('/funcionarios', veficaCadastro, (req, res) => {
     const { nome, funcao, departamento, email, telefone } = req.body
     const dadosFuncionarios = {
@@ -46,14 +45,14 @@ func.post('/funcionarios', veficaCadastro, (req, res) => {
             .json(dadosFuncionarios)
 })
 
-// Lista todos funcionários
+// Listar todos funcionários
 func.get('/funcionarios', (req, res) => {
     return res 
             .status(200)
             .json(funcionarios)
 })
 
-// Lista funcionário pelo id
+// Listar funcionário pelo id
 func.get('/funcionarios/:id', verificaId, (req, res) => {
     const { id } = req.params
     const idFilter = funcionarios.filter(funcio => funcio.id === id)
@@ -62,19 +61,8 @@ func.get('/funcionarios/:id', verificaId, (req, res) => {
             .json(idFilter)
 })
 
-// Exclui funcionário
-func.delete('/funcionarios/:id', verificaId, (req, res) => {
-    const { id } = req.params
-    let i = funcionarios.findIndex(funcio => funcio.id === id)
-    console.log(i)
-    console.log(funcionarios[i])
-    funcionarios.splice(i, 1)
-    return res
-            .status(200)
-            .json({message: 'Funcionário excluído com sucesso'})
-})
 
-// Altera funcionário
+// Alterar funcionário
 func.put('/funcionarios/:id', verificaId, veficaCadastro, (req, res) => {
     const { nome, funcao, departamento, email, telefone } = req.body
     const { id } = req.params
@@ -91,6 +79,18 @@ func.put('/funcionarios/:id', verificaId, veficaCadastro, (req, res) => {
     return res
             .status(200)
             .json(dadosFuncionarios)
+})
+
+// Excluir funcionário
+func.delete('/funcionarios/:id', verificaId, (req, res) => {
+    const { id } = req.params
+    let i = funcionarios.findIndex(funcio => funcio.id === id)
+    console.log(i)
+    console.log(funcionarios[i])
+    funcionarios.splice(i, 1)
+    return res
+            .status(200)
+            .json({message: 'Funcionário excluído com sucesso'})
 })
 
 
